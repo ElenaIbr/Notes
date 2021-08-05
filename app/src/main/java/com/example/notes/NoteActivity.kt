@@ -178,7 +178,7 @@ class NoteActivity : AppCompatActivity() {
         deleteInBtn?.visibility = View.GONE
     }
 
-    fun deleteImg() {
+    fun deleteImg(view: View) {
         imLayout?.visibility = View.GONE
         imgView = "null"
     }
