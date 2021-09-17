@@ -1,7 +1,7 @@
 # Notes
 
 Notes is analog of the system application with notes.
-I used local DB SQLite for this app creating.
+For this app i used SQLite.
 We can see result below: 
 
 ![](https://raw.githubusercontent.com/ElenaIbr/Notes/master/notes_demo.gif)
@@ -13,6 +13,9 @@ We can see result below:
 - Read saved notes and images
 - Update notes and images
 - Delete notes and images
+
+In database inspector we can see DB structure:
+![](https://raw.githubusercontent.com/ElenaIbr/Notes/master/notes_demo.gif)
 
 ## Tech
 
