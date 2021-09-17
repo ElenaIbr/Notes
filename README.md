@@ -17,14 +17,13 @@ We can see result below:
 ## Tech
 
 Application was created in Android Studio 4.2.1 and works on API 19: Android 4.4 (KitKat).
+
 defaultConfig {
         applicationId "com.example.notes"
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
 ## Help
