@@ -19,7 +19,7 @@ In database inspector we can see database structure:
 
 ## Tech
 
-Application was created in Android Studio 4.2.1 and works on API 19: Android 4.4 (KitKat).
+Application was created in Android Studio 4.2.1.
 MinSdkVersion 19, targetSdkVersion 30, compileSdkVersion 30, buildToolsVersion "30.0.3"
 
 
