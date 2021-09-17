@@ -125,7 +125,7 @@ class NoteActivity : AppCompatActivity() {
 
     private fun getCurTime(): String {
         val time = Calendar.getInstance().time
-        val formatter = SimpleDateFormat("dd-MM-yy kk:mm", Locale.getDefault())
+        val formatter = SimpleDateFormat("dd/MM kk:mm", Locale.getDefault())
         return formatter.format(time)
     }
 
