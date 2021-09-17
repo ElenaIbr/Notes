@@ -50,7 +50,7 @@ class DbManager(context: Context) {
     }
 
     fun readDbData(searchTxt : String) : ArrayList<Note> {
-        val dataList = ArrayList<Note>()
+        var dataList = ArrayList<Note>()
 
         val select = "${DbClass.COLUMN_NAME_TITLE} like ?"
         val cursor = db?.query(
@@ -86,6 +86,7 @@ class DbManager(context: Context) {
             }
         }
         cursor?.close()
+
         return dataList
     }
 

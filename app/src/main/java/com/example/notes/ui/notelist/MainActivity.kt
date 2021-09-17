@@ -68,8 +68,10 @@ class MainActivity : AppCompatActivity() {
                 val count = myAdapter.itemCount
                 if(count==0){
                     mBinding.emptLst.visibility = View.VISIBLE
+                    mBinding.noNotesDog.visibility = View.VISIBLE
                 }else{
                     mBinding.emptLst.visibility = View.GONE
+                    mBinding.noNotesDog.visibility = View.GONE
                 }
             }
         })

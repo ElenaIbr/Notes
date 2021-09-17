@@ -3,6 +3,6 @@
     <string name="title">Title</string>
     <string name="content">Text</string>
     <string name="searchHint">Search notes...</string>
-    <string name="empty">No notes found</string>
+    <string name="empty">No notes found...</string>
     <string name="delete">Note was deleted</string>
 </resources>

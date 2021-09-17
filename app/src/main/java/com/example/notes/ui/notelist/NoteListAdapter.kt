@@ -77,6 +77,7 @@ class NoteListAdapter(list : ArrayList<Note>, context : Context) : RecyclerView.
     fun updateAdapter(list : ArrayList<Note>) {
         listArray.clear()
         listArray.addAll(list)
+        listArray.reverse()
         notifyDataSetChanged()
     }
 
