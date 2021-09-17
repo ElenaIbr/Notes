@@ -1,6 +1,6 @@
-package com.example.notes
+package com.example.notes.model
 
-class NoteItem {
+class Note {
     var title = "empty"
     var dec = "empty"
     var time = ""

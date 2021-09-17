@@ -1,4 +1,4 @@
-package com.example.notes
+package com.example.notes.ui.notelist
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,9 +9,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.notes.ui.NoteActivity
+import com.example.notes.R
 import com.example.notes.database.DbManager
+import com.example.notes.model.Note
+import com.example.notes.utilits.IntentConstants
 
-class Adapter(list : ArrayList<NoteItem>, context : Context) : RecyclerView.Adapter<Adapter.Holder>() {
+class NoteListAdapter(list : ArrayList<Note>, context : Context) : RecyclerView.Adapter<NoteListAdapter.Holder>() {
 
     private var listArray = list
     private var contextC = context
@@ -27,7 +31,7 @@ class Adapter(list : ArrayList<NoteItem>, context : Context) : RecyclerView.Adap
         private val contextY = context
 
         @SuppressLint("SetTextI18n")
-        fun setTitle(tit : NoteItem){
+        fun setTitle(tit : Note){
 
             title.text = getTxtSize(tit.title)
             desc.text = getTxtSize(tit.dec)
@@ -70,9 +74,9 @@ class Adapter(list : ArrayList<NoteItem>, context : Context) : RecyclerView.Adap
         return listArray.size
     }
 
-    fun updateAdapter(listItem : ArrayList<NoteItem>) {
+    fun updateAdapter(list : ArrayList<Note>) {
         listArray.clear()
-        listArray.addAll(listItem)
+        listArray.addAll(list)
         notifyDataSetChanged()
     }
 

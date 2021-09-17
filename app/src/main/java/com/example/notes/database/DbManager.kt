@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
-import com.example.notes.NoteItem
+import com.example.notes.model.Note
 import com.example.notes.helper.dogImgArr
 import com.example.notes.helper.dogNumber
 
@@ -49,8 +49,8 @@ class DbManager(context: Context) {
         db?.update(DbClass.TABLE_NAME, values, itemToUpdate, null)
     }
 
-    fun readDbData(searchTxt : String) : ArrayList<NoteItem> {
-        val dataList = ArrayList<NoteItem>()
+    fun readDbData(searchTxt : String) : ArrayList<Note> {
+        val dataList = ArrayList<Note>()
 
         val select = "${DbClass.COLUMN_NAME_TITLE} like ?"
         val cursor = db?.query(
@@ -73,7 +73,7 @@ class DbManager(context: Context) {
                 val uri = this.getString(this.getColumnIndex(DbClass.COLUMN_URI))
                 val dog = this.getInt(this.getColumnIndex(DbClass.COLUMN_DOG_RES))
 
-                val noteItem = NoteItem()
+                val noteItem = Note()
                 noteItem.id = dataId
                 noteItem.title = dataTitle.toString()
                 noteItem.dec = dataDes.toString()

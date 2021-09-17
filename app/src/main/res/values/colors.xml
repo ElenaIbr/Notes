@@ -11,6 +11,9 @@
     <color name="lavanda">#30E6E6FA</color>
     <color name="textColor">#4a536b</color>
     <color name="gray">#B3B3B3</color>
+    <color name="dark_gray">#6C6A6A</color>
     <color name="transp">#00000000 </color>
-    <color name="yellow">#eefb54 </color>
+    <color name="yellow">#FCFFD7</color>
+    <color name="yellow_color">#DDCE07</color>
+    <color name="pink">#FFCBDD</color>
 </resources>

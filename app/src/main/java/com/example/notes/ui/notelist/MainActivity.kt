@@ -1,4 +1,4 @@
-package com.example.notes
+package com.example.notes.ui.notelist
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,38 +6,38 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.notes.ui.NoteActivity
+import com.example.notes.R
 import com.example.notes.database.DbManager
+import com.example.notes.databinding.ActivityMainBinding
 
 @Suppress("NAME_SHADOWING")
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var mBinding: ActivityMainBinding
+
     val myDbManager = DbManager(this)
-    val myAdapter = Adapter(ArrayList(), this)
-    private var editText : EditText? = null
-    var emptyList : TextView? = null
-    var rcView : RecyclerView? = null
+    val myAdapter = NoteListAdapter(ArrayList(), this)
 
     val context = this
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
+
         initAdapter()
         searchView()
-
     }
 
     override fun onResume() {
         super.onResume()
-        editText?.text?.clear()
-        editText?.clearFocus()
+        mBinding.editt.text?.clear()
+        mBinding.editt.clearFocus()
         myDbManager.openDb()
         fillArrayForAdapter()
     }
@@ -48,22 +48,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun onClickAdd(view: View) {
-
         val intent = Intent(this, NoteActivity::class.java)
         startActivity(intent)
     }
 
     private fun searchView() {
-        editText = findViewById(R.id.editt)
-        emptyList = findViewById(R.id.emptLst)
 
-        editText?.addTextChangedListener(object : TextWatcher {
+        mBinding.editt.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {}
 
             override fun beforeTextChanged(s: CharSequence, start: Int,
-                                           count: Int, after: Int) {
-            }
+                                           count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
@@ -71,26 +67,25 @@ class MainActivity : AppCompatActivity() {
 
                 val count = myAdapter.itemCount
                 if(count==0){
-                    emptyList?.visibility = View.VISIBLE
+                    mBinding.emptLst.visibility = View.VISIBLE
                 }else{
-                    emptyList?.visibility = View.GONE
+                    mBinding.emptLst.visibility = View.GONE
                 }
             }
         })
     }
 
     private fun initAdapter() {
-        rcView = findViewById(R.id.rсView)
 
         val swapper = deleteBySwap()
-        swapper.attachToRecyclerView(rcView)
-        rcView?.adapter = myAdapter
+        swapper.attachToRecyclerView(mBinding.rView)
+        mBinding.rView.adapter = myAdapter
 
-        val layoutMan = StaggeredGridLayoutManager(
+        val layoutManager = StaggeredGridLayoutManager(
             2, // span count
             StaggeredGridLayoutManager.VERTICAL) // orientation
 
-        rcView?.layoutManager = layoutMan
+        mBinding.rView.layoutManager = layoutManager
     }
 
     private fun fillArrayForAdapter() {

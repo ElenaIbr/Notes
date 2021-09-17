@@ -1,4 +1,4 @@
-package com.example.notes
+package com.example.notes.utilits
 
 object IntentConstants {
     const val TITLE_KEY = "title_key"

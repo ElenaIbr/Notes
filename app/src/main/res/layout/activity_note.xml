@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lavanda"
-    tools:context=".NoteActivity">
+    tools:context=".ui.NoteActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -23,15 +23,22 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <ImageButton
+                android:id="@+id/return_to_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_arrow_back"
+                android:background="@color/transp"
+                android:padding="10dp"/>
+
             <EditText
                 android:id="@+id/editTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="10dp"
+               android:layout_margin="10dp"
                 android:background="@drawable/title_castom"
                 android:ems="10"
+                android:maxLength="20"
                 android:hint="@string/title"
                 android:inputType="textPersonName"
                 android:textColor="@color/textColor"
@@ -108,8 +115,8 @@
         android:layout_marginBottom="20dp"
         android:clickable="true"
         android:onClick="saveNewNote"
-        android:src="@drawable/ic_save"
-        app:backgroundTint="@color/yellow"
+        android:src="@drawable/ic_done"
+        app:backgroundTint="@color/yellow_color"
         app:layout_constraintBottom_toBottomOf="@+id/main_constr"
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="UsingOnClickInXml"

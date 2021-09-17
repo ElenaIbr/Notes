@@ -1,88 +1,59 @@
-package com.example.notes
+package com.example.notes.ui
 
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.notes.R
 import com.example.notes.database.DbManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.example.notes.databinding.ActivityNoteBinding
+import com.example.notes.utilits.IntentConstants
 import java.text.SimpleDateFormat
 import java.util.*
 
 class NoteActivity : AppCompatActivity() {
+
     private val myDbManager = DbManager(this)
 
-    private var titleTv: EditText? = null //title
-    private var desTv: EditText? = null //description
-    private var imageView: ImageView? = null //image
+    private lateinit var mBinding: ActivityNoteBinding
 
-    private var editBtn: FloatingActionButton? = null
-    private var saveBtn: FloatingActionButton? = null
-    private var addPicBtn: FloatingActionButton? = null
-    private var deleteInBtn: ImageButton? = null
-
-    private val imgRequestCode = 10//request to gallery
+    //request to gallery
+    private val imgRequestCode = 10
     private var uriImg: String? = null
     private var imgView: String? = null
 
-    private var imLayout: FrameLayout? = null
-
     private var forEdit: Boolean = false
-
     private var elementId = 0
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note)
+        mBinding = ActivityNoteBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
 
-        titleTv = findViewById(R.id.editTitle)
-        desTv = findViewById(R.id.editContent)
-        editBtn = findViewById(R.id.editBtn)
-        saveBtn = findViewById(R.id.saveBtn)
-        imLayout = findViewById(R.id.imLayout)
-        imageView = findViewById(R.id.imContent)
-        addPicBtn = findViewById(R.id.addImBtn)
-        deleteInBtn = findViewById(R.id.deleteInBtn)
+        mBinding.editContent.requestFocus()
+        mBinding.addImBtn.visibility = View.VISIBLE
+        mBinding.saveBtn.visibility = View.VISIBLE
 
-        desTv?.requestFocus()
-
-        addPicBtn?.visibility = View.VISIBLE
-        saveBtn?.visibility = View.VISIBLE
-
-        imLayout?.setOnClickListener {
+        mBinding.returnToList.setOnClickListener {
+            onBackPressed()
+        }
+        mBinding.imLayout.setOnClickListener {
             val intent = Intent(this, ImageActivity::class.java)
             intent.putExtra(IntentConstants.URI_KEY, imgView)
             startActivity(intent)
         }
+        
 
-        editBtn?.setOnClickListener {
+        mBinding.editBtn.setOnClickListener {
             btnState(1)
         }
+
         getInit()
-
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if(resultCode == Activity.RESULT_OK && requestCode == imgRequestCode){
-            imageView?.setImageURI(data?.data)
-
-            uriImg = data?.data.toString()
-            imgView = data?.data.toString()
-
-            Log.d("MyLog", "$imgView")
-
-            contentResolver.takePersistableUriPermission(data?.data!!, Intent.FLAG_GRANT_READ_URI_PERMISSION)
-            imLayout?.visibility = View.VISIBLE
-        }
     }
 
     override fun onResume() {
@@ -90,28 +61,39 @@ class NoteActivity : AppCompatActivity() {
         myDbManager.openDb()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        myDbManager.closeDb()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(resultCode == Activity.RESULT_OK && requestCode == imgRequestCode){
+            mBinding.imContent.setImageURI(data?.data)
+
+            uriImg = data?.data.toString()
+            imgView = data?.data.toString()
+
+            contentResolver.takePersistableUriPermission(data?.data!!, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            mBinding.imLayout.visibility = View.VISIBLE
+        }
+    }
+
     fun saveNewNote(view: View) {
         btnState(2)
         val title = findViewById<TextView>(R.id.editTitle).text
         val content = findViewById<TextView>(R.id.editContent).text
 
-        addPicBtn?.visibility = View.GONE
-
-        Log.d("MyLog", "$uriImg")
+        mBinding.addImBtn.visibility = View.GONE
 
         if (forEdit) {
             myDbManager.updateLine(title.toString(), content.toString(), elementId, getCurTime(), imgView.toString())
             Toast.makeText(view.context, "Changes saved!", Toast.LENGTH_SHORT).show()
         } else {
-
             myDbManager.insertToDb(title.toString(), content.toString(), getCurTime(), uriImg.toString())
             Toast.makeText(view.context, "New note saved!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        myDbManager.closeDb()
     }
 
     private fun getInit() {
@@ -119,27 +101,26 @@ class NoteActivity : AppCompatActivity() {
         val i = intent
 
         if (i.getStringExtra(IntentConstants.TITLE_KEY) != null) {
-
             forEdit = true
             btnState(2)
-            titleTv?.setText(i.getStringExtra(IntentConstants.TITLE_KEY))
-            desTv?.setText(i.getStringExtra(IntentConstants.DES_KEY))
+            mBinding.editTitle.setText(i.getStringExtra(IntentConstants.TITLE_KEY))
+            mBinding.editContent.setText(i.getStringExtra(IntentConstants.DES_KEY))
             elementId = i.getIntExtra(IntentConstants.ID_KEY, 0)
 
             if(i.getStringExtra(IntentConstants.URI_KEY) != "null") {
-                imLayout?.visibility = View.VISIBLE
-                imageView?.setImageURI(Uri.parse(i.getStringExtra(IntentConstants.URI_KEY)))
+                mBinding.imLayout.visibility = View.VISIBLE
+                mBinding.imContent.setImageURI(Uri.parse(i.getStringExtra(IntentConstants.URI_KEY)))
                 imgView = i.getStringExtra(IntentConstants.URI_KEY)
             }
             else{
-                imLayout?.visibility = View.GONE
+                mBinding.imLayout.visibility = View.GONE
             }
         }
     }
 
     private fun enableElements(isEnabled: Boolean) {
-        titleTv?.isEnabled = isEnabled
-        desTv?.isEnabled = isEnabled
+        mBinding.editTitle.isEnabled = isEnabled
+        mBinding.editContent.isEnabled = isEnabled
     }
 
     private fun getCurTime(): String {
@@ -149,22 +130,23 @@ class NoteActivity : AppCompatActivity() {
     }
 
     private fun btnState(state : Int) {
-
         when (state) {
+            //hide edit buttons
             1 -> {
                 enableElements(true)
-                saveBtn?.visibility = View.VISIBLE
-                editBtn?.visibility = View.GONE
-                addPicBtn?.visibility = View.VISIBLE
-                deleteInBtn?.visibility = View.VISIBLE
+                mBinding.saveBtn.visibility = View.VISIBLE
+                mBinding.editBtn.visibility = View.GONE
+                mBinding.addImBtn.visibility = View.VISIBLE
+                mBinding.deleteInBtn.visibility = View.VISIBLE
             }
 
+            //show edit buttons
             2 -> {
                 enableElements(false)
-                saveBtn?.visibility = View.GONE
-                editBtn?.visibility = View.VISIBLE
-                addPicBtn?.visibility = View.GONE
-                deleteInBtn?.visibility = View.GONE
+                mBinding.saveBtn.visibility = View.GONE
+                mBinding.editBtn.visibility = View.VISIBLE
+                mBinding.addImBtn.visibility = View.GONE
+                mBinding.deleteInBtn.visibility = View.GONE
             }
         }
     }
@@ -174,12 +156,11 @@ class NoteActivity : AppCompatActivity() {
         val i = Intent(Intent.ACTION_OPEN_DOCUMENT)
         i.type = "image/*"
         startActivityForResult(i, imgRequestCode)
-
-        deleteInBtn?.visibility = View.GONE
+        mBinding.deleteInBtn.visibility = View.GONE
     }
 
-    fun deleteImg() {
-        imLayout?.visibility = View.GONE
+    fun deleteImg(view: View) {
+        mBinding.imLayout.visibility = View.GONE
         imgView = "null"
     }
 }
