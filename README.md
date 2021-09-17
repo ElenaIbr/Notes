@@ -15,7 +15,7 @@ We can see result below:
 - Delete notes and images
 
 In database inspector we can see DB structure:
-![](https://raw.githubusercontent.com/ElenaIbr/Notes/master/notes_demo.gif)
+![](https://raw.githubusercontent.com/ElenaIbr/Notes/master/dbInspector.png)
 
 ## Tech
 
