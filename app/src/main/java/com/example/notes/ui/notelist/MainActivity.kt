@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notes.ui.NoteActivity
 import com.example.notes.R
+import com.example.notes.app.MyApplication
 import com.example.notes.database.DbManager
 import com.example.notes.databinding.ActivityMainBinding
 
@@ -20,13 +21,17 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mBinding: ActivityMainBinding
 
-    val myDbManager = DbManager(this)
-    val myAdapter = NoteListAdapter(ArrayList(), this)
+    //lateinit var myDbManager : DbManager
+    lateinit var myAdapter : NoteListAdapter
 
     val context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //myDbManager = DbManager(this)
+        myAdapter = NoteListAdapter(ArrayList(), this)
+
         mBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
@@ -38,13 +43,13 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         mBinding.editt.text?.clear()
         mBinding.editt.clearFocus()
-        myDbManager.openDb()
+        //myDbManager.openDb()
         fillArrayForAdapter()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        myDbManager.closeDb()
+        //myDbManager.closeDb()
     }
 
     fun onClickAdd(view: View) {
@@ -63,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
-                myAdapter.updateAdapter(myDbManager.readDbData(s.toString()))
+                myAdapter.updateAdapter((application as MyApplication).myDbManager.readDbData(s.toString()))
 
                 val count = myAdapter.itemCount
                 if(count==0){
@@ -91,7 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fillArrayForAdapter() {
-        myAdapter.updateAdapter(myDbManager.readDbData(""))
+        myAdapter.updateAdapter((application as MyApplication).myDbManager.readDbData(""))
     }
 
     private fun deleteBySwap(): ItemTouchHelper {
@@ -106,7 +111,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                myAdapter.deleteLine(viewHolder.adapterPosition, myDbManager)
+                myAdapter.deleteLine(viewHolder.adapterPosition, (application as MyApplication).myDbManager)
                 Toast.makeText(context, getString(R.string.delete), Toast.LENGTH_SHORT).show()
             }
         })

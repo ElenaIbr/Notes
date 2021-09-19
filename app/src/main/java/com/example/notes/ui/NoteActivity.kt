@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.notes.R
+import com.example.notes.app.MyApplication
 import com.example.notes.database.DbManager
 import com.example.notes.databinding.ActivityNoteBinding
 import com.example.notes.utilits.IntentConstants
@@ -17,7 +18,7 @@ import java.util.*
 
 class NoteActivity : AppCompatActivity() {
 
-    private val myDbManager = DbManager(this)
+    //private val myDbManager = DbManager(this)
 
     private lateinit var mBinding: ActivityNoteBinding
 
@@ -47,7 +48,7 @@ class NoteActivity : AppCompatActivity() {
             intent.putExtra(IntentConstants.URI_KEY, imgView)
             startActivity(intent)
         }
-        
+
 
         mBinding.editBtn.setOnClickListener {
             btnState(1)
@@ -58,12 +59,12 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        myDbManager.openDb()
+        //myDbManager.openDb()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        myDbManager.closeDb()
+        //myDbManager.closeDb()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -88,10 +89,10 @@ class NoteActivity : AppCompatActivity() {
         mBinding.addImBtn.visibility = View.GONE
 
         if (forEdit) {
-            myDbManager.updateLine(title.toString(), content.toString(), elementId, getCurTime(), imgView.toString())
+            (application as MyApplication).myDbManager.updateLine(title.toString(), content.toString(), elementId, getCurTime(), imgView.toString())
             Toast.makeText(view.context, "Changes saved!", Toast.LENGTH_SHORT).show()
         } else {
-            myDbManager.insertToDb(title.toString(), content.toString(), getCurTime(), uriImg.toString())
+            (application as MyApplication).myDbManager.insertToDb(title.toString(), content.toString(), getCurTime(), uriImg.toString())
             Toast.makeText(view.context, "New note saved!", Toast.LENGTH_SHORT).show()
         }
     }
