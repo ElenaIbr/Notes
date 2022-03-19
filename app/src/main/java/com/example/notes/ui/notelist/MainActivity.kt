@@ -1,11 +1,14 @@
 package com.example.notes.ui.notelist
 
+import android.app.AlertDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +16,6 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.notes.ui.NoteActivity
 import com.example.notes.R
 import com.example.notes.app.MyApplication
-import com.example.notes.database.DbManager
 import com.example.notes.databinding.ActivityMainBinding
 
 @Suppress("NAME_SHADOWING")
@@ -43,8 +45,13 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         mBinding.editt.text?.clear()
         mBinding.editt.clearFocus()
-        //myDbManager.openDb()
         fillArrayForAdapter()
+
+        if (myAdapter.itemCount == 0) {
+            mBinding.emptLst.visibility = View.VISIBLE
+        } else {
+            mBinding.emptLst.visibility = View.GONE
+        }
     }
 
     override fun onDestroy() {
@@ -69,15 +76,6 @@ class MainActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
                 myAdapter.updateAdapter((application as MyApplication).myDbManager.readDbData(s.toString()))
-
-                val count = myAdapter.itemCount
-                if(count==0){
-                    mBinding.emptLst.visibility = View.VISIBLE
-                    mBinding.noNotesDog.visibility = View.VISIBLE
-                }else{
-                    mBinding.emptLst.visibility = View.GONE
-                    mBinding.noNotesDog.visibility = View.GONE
-                }
             }
         })
     }
@@ -111,9 +109,34 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                myAdapter.deleteLine(viewHolder.adapterPosition, (application as MyApplication).myDbManager)
-                Toast.makeText(context, getString(R.string.delete), Toast.LENGTH_SHORT).show()
+                showDialog(
+                    onYesClick = {
+                        myAdapter.deleteLine(viewHolder.adapterPosition, (application as MyApplication).myDbManager)
+                        mBinding.emptLst.visibility = View.VISIBLE
+                        Toast.makeText(context, getString(R.string.delete), Toast.LENGTH_SHORT).show()
+                    }
+                )
             }
         })
+    }
+
+    fun showDialog(onYesClick: () -> Unit) {
+        val builder = AlertDialog.Builder(this)
+            .create()
+        val view = layoutInflater.inflate(R.layout.delete_dialog,null)
+        val cancelButton = view.findViewById<TextView>(R.id.dialogButtonCancel)
+        val yesButton = view.findViewById<TextView>(R.id.dialogButtonOK)
+        builder.setView(view)
+        cancelButton.setOnClickListener {
+            builder.dismiss()
+            myAdapter.updateAdapter((application as MyApplication).myDbManager.readDbData(""))
+            mBinding.emptLst.visibility = View.GONE
+        }
+        yesButton.setOnClickListener {
+            builder.dismiss()
+            onYesClick()
+        }
+        builder.setCanceledOnTouchOutside(true)
+        builder.show()
     }
 }

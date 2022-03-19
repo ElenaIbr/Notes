@@ -8,13 +8,14 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.notes.R
+import androidx.core.net.toUri
 import com.example.notes.app.MyApplication
-import com.example.notes.database.DbManager
 import com.example.notes.databinding.ActivityNoteBinding
 import com.example.notes.utilits.IntentConstants
 import java.text.SimpleDateFormat
 import java.util.*
+import com.example.notes.R
+
 
 class NoteActivity : AppCompatActivity() {
 
@@ -36,7 +37,7 @@ class NoteActivity : AppCompatActivity() {
         mBinding = ActivityNoteBinding.inflate(layoutInflater)
         setContentView(mBinding.root)
 
-        mBinding.editContent.requestFocus()
+        mBinding.editTitle.requestFocus()
         mBinding.addImBtn.visibility = View.VISIBLE
         mBinding.saveBtn.visibility = View.VISIBLE
 
@@ -48,8 +49,6 @@ class NoteActivity : AppCompatActivity() {
             intent.putExtra(IntentConstants.URI_KEY, imgView)
             startActivity(intent)
         }
-
-
         mBinding.editBtn.setOnClickListener {
             btnState(1)
         }
@@ -59,7 +58,16 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        //myDbManager.openDb()
+
+        mBinding.shareBtn.setOnClickListener {
+            val titleSend = findViewById<TextView>(R.id.editTitle).text
+            val contentSend = findViewById<TextView>(R.id.editContent).text
+            shareContent(
+                title = titleSend.toString(),
+                content = contentSend.toString(),
+                uriImg
+            )
+        }
     }
 
     override fun onDestroy() {
@@ -94,6 +102,7 @@ class NoteActivity : AppCompatActivity() {
         } else {
             (application as MyApplication).myDbManager.insertToDb(title.toString(), content.toString(), getCurTime(), uriImg.toString())
             Toast.makeText(view.context, "New note saved!", Toast.LENGTH_SHORT).show()
+            onBackPressed()
         }
     }
 
@@ -163,5 +172,16 @@ class NoteActivity : AppCompatActivity() {
     fun deleteImg(view: View) {
         mBinding.imLayout.visibility = View.GONE
         imgView = "null"
+    }
+
+    private fun shareContent(title: String, content: String, uri: String?) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, content)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, "Share")
+        startActivity(shareIntent)
     }
 }

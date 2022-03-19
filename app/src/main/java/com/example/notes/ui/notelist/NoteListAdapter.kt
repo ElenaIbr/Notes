@@ -26,17 +26,15 @@ class NoteListAdapter(list : ArrayList<Note>, context : Context) : RecyclerView.
         private val title: TextView = itemView.findViewById(R.id.titleTv)
         private val desc: TextView = itemView.findViewById(R.id.decTv)
         private val time: TextView = itemView.findViewById(R.id.timeTV)
-        private val img: ImageView = itemView.findViewById(R.id.dogImage)
 
         private val contextY = context
 
         @SuppressLint("SetTextI18n")
         fun setTitle(tit : Note){
 
-            title.text = getTxtSize(tit.title)
-            desc.text = getTxtSize(tit.dec)
+            title.text = tit.title
+            desc.text = tit.dec
             time.text = tit.time
-            img.setImageResource(tit.dog)
 
 
             itemView.setOnClickListener {
@@ -47,16 +45,6 @@ class NoteListAdapter(list : ArrayList<Note>, context : Context) : RecyclerView.
                 intent.putExtra(IntentConstants.URI_KEY, tit.uri)
                 contextY.startActivity(intent)
 
-            }
-        }
-
-        private fun getTxtSize(text: String, maxSize: Int = 20): String{
-            var maxLetters = maxSize
-            return if(text.length<maxLetters) {
-                maxLetters = text.length
-                text.substring(0,maxLetters)
-            } else{
-                text.substring(0,maxLetters)+"..."
             }
         }
     }
@@ -87,4 +75,5 @@ class NoteListAdapter(list : ArrayList<Note>, context : Context) : RecyclerView.
         notifyItemRangeChanged(0, listArray.size)
         notifyItemRemoved(position)
     }
+
 }
