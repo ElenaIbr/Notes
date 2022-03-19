@@ -47,11 +47,7 @@ class MainActivity : AppCompatActivity() {
         mBinding.editt.clearFocus()
         fillArrayForAdapter()
 
-        if (myAdapter.itemCount == 0) {
-            mBinding.emptLst.visibility = View.VISIBLE
-        } else {
-            mBinding.emptLst.visibility = View.GONE
-        }
+        myAdapter.updateAdapter((application as MyApplication).myDbManager.readDbData(""))
     }
 
     override fun onDestroy() {

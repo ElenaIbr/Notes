@@ -7,10 +7,11 @@
         <entry key="app/src/main/res/drawable/ic_arrow_back.xml" value="0.19537037037037036" />
         <entry key="app/src/main/res/drawable/ic_butterfly.xml" value="0.19537037037037036" />
         <entry key="app/src/main/res/drawable/title_castom.xml" value="0.19537037037037036" />
+        <entry key="app/src/main/res/layout/activity_image.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1125" />
         <entry key="app/src/main/res/layout/activity_note.xml" value="0.22760416666666666" />
         <entry key="app/src/main/res/layout/delete_dialog.xml" value="0.22760416666666666" />
-        <entry key="app/src/main/res/layout/item_rc.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_rc.xml" value="0.25" />
       </map>
     </option>
   </component>

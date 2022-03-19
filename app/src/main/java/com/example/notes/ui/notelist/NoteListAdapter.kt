@@ -3,6 +3,7 @@ package com.example.notes.ui.notelist
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class NoteListAdapter(list : ArrayList<Note>, context : Context) : RecyclerView.
         private val title: TextView = itemView.findViewById(R.id.titleTv)
         private val desc: TextView = itemView.findViewById(R.id.decTv)
         private val time: TextView = itemView.findViewById(R.id.timeTV)
+        private val attached: ImageView = itemView.findViewById(R.id.attached)
 
         private val contextY = context
 
@@ -36,6 +38,11 @@ class NoteListAdapter(list : ArrayList<Note>, context : Context) : RecyclerView.
             desc.text = tit.dec
             time.text = tit.time
 
+            if(tit.uri.contains("content")) {
+                attached.visibility = View.VISIBLE
+            } else {
+                attached.visibility = View.GONE
+            }
 
             itemView.setOnClickListener {
                 val intent = Intent(contextY, NoteActivity::class.java)

@@ -46,20 +46,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/titleTv"
+                android:ellipsize="end"
+                android:lines="2"
                 android:paddingStart="10dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="10dp"
                 android:text="@string/title"
                 android:textColor="@color/gray"
-                android:textSize="16sp"
-                android:lines="3"
-                android:ellipsize="end" />
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/attached"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/decTv"
+                android:visibility="gone"
+                android:src="@drawable/ic_baseline_attach_file_24" />
 
             <TextView
                 android:id="@+id/timeTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/decTv"
+                android:layout_below="@+id/attached"
                 android:paddingStart="12dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="12dp"

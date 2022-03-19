@@ -5,8 +5,6 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.provider.BaseColumns
 import com.example.notes.model.Note
-import com.example.notes.helper.dogImgArr
-import com.example.notes.helper.dogNumber
 
 class DbManager(context: Context) {
 
@@ -23,16 +21,6 @@ class DbManager(context: Context) {
         values.put(DbClass.COLUMN_NAME_CONTENT, content)
         values.put(DbClass.COLUMN_TIME, time)
         values.put(DbClass.COLUMN_URI, uri)
-        values.put(DbClass.COLUMN_DOG_RES, dogImgArr[dogNumber])
-
-        if (dogNumber < dogImgArr.size){
-            values.put(DbClass.COLUMN_DOG_RES, dogImgArr[dogNumber])
-            dogNumber +=1
-        }
-        else {
-            dogNumber =0
-            values.put(DbClass.COLUMN_DOG_RES, dogImgArr[dogNumber])
-        }
 
         db?.insert(DbClass.TABLE_NAME, null, values)
     }
