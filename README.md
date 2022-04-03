@@ -6,7 +6,13 @@ Notes is analog of the system application with notes.
 For this app i used SQLite.
 We can see result below: 
 
-![](https://raw.githubusercontent.com/ElenaIbr/Notes/master/notes_demo.gif)
+<img width="220" alt="Снимок экрана 2022-04-03 в 16 04 29" src="https://user-images.githubusercontent.com/87421176/161433349-e8004b0a-0ff1-4a0e-aa53-e1cef633ba43.png">
+
+<img width="220" alt="Снимок экрана 2022-04-03 в 16 04 29" src="https://user-images.githubusercontent.com/87421176/161433352-846808a6-9975-431e-87d1-879427f66b3b.png">
+
+<img width="220" alt="Снимок экрана 2022-04-03 в 16 04 29" src="https://user-images.githubusercontent.com/87421176/161433355-5034941d-f876-4607-b057-0119f1a60cfb.png">
+
+<img width="220" alt="Снимок экрана 2022-04-03 в 16 04 29" src="https://user-images.githubusercontent.com/87421176/161433358-4cedefee-7045-452b-b85c-0c96a4fe608a.png">
 
 
 ## Features
